@@ -1,4 +1,4 @@
-package com.payback.boundary.images.models
+package com.payback.domain.images.models
 
 data class ImageDetails(
     val id: Int,

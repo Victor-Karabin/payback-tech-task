@@ -1,20 +1,20 @@
 package com.payback.data.images
 
-import com.payback.boundary.common.errors.NetworkDisconnected
-import com.payback.boundary.images.ImagesRepo
-import com.payback.boundary.images.errors.ApiLimitExceeded
-import com.payback.boundary.images.errors.ImageNotFound
-import com.payback.boundary.images.models.Image
-import com.payback.boundary.images.models.ImageDetails
+import com.payback.domain.images.ImagesRepo
+import com.payback.domain.images.errors.ApiLimitExceeded
+import com.payback.domain.images.errors.ImageNotFound
+import com.payback.domain.images.models.Image
+import com.payback.domain.images.models.ImageDetails
 import com.payback.commons.mapFailure
 import com.payback.data.rest.RestThrowable
 import com.payback.data.rest.wrapRequest
-import com.payback.data.toImageDetails
-import com.payback.data.toImages
 import com.payback.di.coroutines.IODispatcher
+import com.payback.domain.network.NetworkDisconnected
 import kotlinx.coroutines.CoroutineDispatcher
 import java.net.UnknownHostException
 import javax.inject.Inject
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 internal class ImagesRepoImpl @Inject constructor(
     private val apiKey: String,
@@ -32,7 +32,11 @@ internal class ImagesRepoImpl @Inject constructor(
             .mapFailure { ex: Throwable ->
                 val throwable = when {
                     ex is UnknownHostException -> NetworkDisconnected()
-                    ex is RestThrowable && ex.code == TOO_MANY_REQUESTS -> ApiLimitExceeded()
+                    ex is RestThrowable && ex.code == TOO_MANY_REQUESTS_CODE -> {
+                        val reset = ex.headers[RESET_DELAY]?.toIntOrNull() ?: 0
+                        ApiLimitExceeded(reset.toDuration(DurationUnit.SECONDS))
+                    }
+
                     else -> ex
                 }
 
@@ -55,6 +59,7 @@ internal class ImagesRepoImpl @Inject constructor(
     }
 
     private companion object {
-        private const val TOO_MANY_REQUESTS = 429
+        private const val TOO_MANY_REQUESTS_CODE = 429
+        private const val RESET_DELAY = "X-RateLimit-Reset"
     }
 }

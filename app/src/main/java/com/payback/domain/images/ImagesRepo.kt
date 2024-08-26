@@ -1,7 +1,7 @@
-package com.payback.boundary.images
+package com.payback.domain.images
 
-import com.payback.boundary.images.models.Image
-import com.payback.boundary.images.models.ImageDetails
+import com.payback.domain.images.models.Image
+import com.payback.domain.images.models.ImageDetails
 
 interface ImagesRepo {
 

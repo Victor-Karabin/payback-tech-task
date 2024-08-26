@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">payback-tech-task</string>
+
+    <!-- Common -->
+    <string name="common_no_internet">No internet connection</string>
+    <string name="common_error_loading_image">Error loading image</string>
+
+    <!-- List -->
+    <string name="list_api_exceed"></string>
 </resources>

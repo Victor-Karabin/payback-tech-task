@@ -1,3 +1,3 @@
-package com.payback.boundary.common.errors
+package com.payback.domain.network
 
 class NetworkDisconnected : Throwable("network is disconnected")

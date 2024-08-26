@@ -76,6 +76,8 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.lifecycle.runtime.compose.android)
 
+    implementation(libs.coil)
+
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.datetime)
@@ -88,7 +90,6 @@ dependencies {
     implementation(libs.retrofit2.converter.moshi)
     implementation(libs.moshi)
     implementation(libs.okhttp3)
-    implementation(libs.okhttp3.loggin.interceptor)
 
     debugImplementation(libs.leak.canary)
 

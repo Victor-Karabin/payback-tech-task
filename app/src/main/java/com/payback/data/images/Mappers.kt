@@ -1,7 +1,7 @@
-package com.payback.data
+package com.payback.data.images
 
-import com.payback.boundary.images.models.Image
-import com.payback.boundary.images.models.ImageDetails
+import com.payback.domain.images.models.Image
+import com.payback.domain.images.models.ImageDetails
 import com.payback.data.images.models.Hit
 import com.payback.data.images.models.SearchResults
 
@@ -14,7 +14,7 @@ private fun Hit.toImage(): Image {
         id = this.id,
         thumbnailUrl = this.previewURL,
         userName = this.user,
-        tags = this.tags
+        tags = this.tags.split(",")
     )
 }
 

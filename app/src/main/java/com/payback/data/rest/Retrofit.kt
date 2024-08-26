@@ -8,7 +8,8 @@ internal fun <T> Response<T>.toThrowable(): Throwable {
     return RestThrowable(
         code = this.code(),
         url = this.raw().request.url.toString(),
-        body = errorBody()?.string() ?: body()?.toString()
+        body = this.errorBody()?.string() ?: this.body()?.toString(),
+        headers = this.headers().toMap()
     )
 }
 
@@ -31,21 +32,3 @@ internal suspend fun <T> wrapRequest(
     }
 }
 
-internal suspend fun <T> wrapRequestNullableBody(
-    dispatcher: CoroutineDispatcher,
-    request: suspend () -> Response<T>
-): Result<T?> {
-    return withContext(dispatcher) {
-        try {
-            val response = request()
-            val body = response.body()
-            if (response.isSuccessful) {
-                Result.success(body)
-            } else {
-                Result.failure(response.toThrowable())
-            }
-        } catch (ex: Exception) {
-            Result.failure(ex)
-        }
-    }
-}
