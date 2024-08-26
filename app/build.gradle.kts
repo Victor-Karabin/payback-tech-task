@@ -81,19 +81,20 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.collections.immutable)
 
-    implementation(libs.room.runtime)
-    implementation(libs.room.coroutines)
-    ksp(libs.room.compiler)
-
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
+
+    implementation(libs.retrofit2.runtime)
+    implementation(libs.retrofit2.converter.moshi)
+    implementation(libs.moshi)
+    implementation(libs.okhttp3)
+    implementation(libs.okhttp3.loggin.interceptor)
 
     debugImplementation(libs.leak.canary)
 
     testImplementation(libs.coroutines.test)
     testImplementation(libs.junit)
     testImplementation(libs.mockito)
-    testImplementation(libs.room.test)
     testImplementation(libs.turbine)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.ui.test.junit4)
