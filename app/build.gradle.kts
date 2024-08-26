@@ -1,3 +1,6 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import org.jetbrains.kotlin.konan.properties.hasProperty
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -19,6 +22,18 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
+
+        val pixabayRestUrl = property("pixabayRestUrl")
+        buildConfigField("String", "PIXABAY_BASE_URL", "\"$pixabayRestUrl\"")
+
+        val properties = gradleLocalProperties(rootDir, project.providers)
+        val pixabayKey = "pixabay.key"
+        if (properties.hasProperty(pixabayKey)) {
+            val apiKey = properties.getProperty(pixabayKey)
+            buildConfigField("String", "PIXABAY_KEY", "\"$apiKey\"")
+        } else {
+            project.logger.error("Error: Property '$pixabayKey' not found in local.properties")
+        }
     }
 
     buildTypes {
