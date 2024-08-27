@@ -2,6 +2,8 @@
     <string name="app_name">payback-tech-task</string>
 
     <!-- Common -->
+    <string name="common_back">Back</string>
+    <string name="common_loading">Loading&#8230;</string>
     <string name="common_error_occurred">Sorry, an error occurred. Please try again later.</string>
     <string name="common_no_internet">No internet connection. Offline mode</string>
     <string name="common_error_loading_image">Error loading image</string>
@@ -13,6 +15,9 @@
     <string name="common_hours">hours</string>
     <string name="common_day">day</string>
     <string name="common_days">days</string>
+    <string name="common_likes">Likes</string>
+    <string name="common_comments">Comments</string>
+    <string name="common_downloads">Downloads</string>
 
     <!-- List -->
     <string name="list_images_empty">No images for this search query</string>

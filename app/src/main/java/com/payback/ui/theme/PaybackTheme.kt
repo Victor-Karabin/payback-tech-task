@@ -16,7 +16,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val darkColorScheme = darkColorScheme(
-    primary = Palette.Millbrook,
+    primary = Palette.WoodyBrown,
     onPrimary = Palette.White,
     secondary = Palette.Boulder,
     onSecondary = Palette.Black,

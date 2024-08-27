@@ -10,8 +10,8 @@ import com.payback.domain.network.NetworkStatus
 import com.payback.domain.network.NetworkTracker
 import com.payback.ui.images.list.models.ImageItem
 import com.payback.ui.images.list.models.ImagesListDialogs
+import com.payback.ui.images.list.models.ImagesListState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
@@ -49,9 +49,12 @@ class ImageListViewModel @Inject constructor(
         get() = unknownErrorChannel.receiveAsFlow()
 
     @OptIn(FlowPreview::class)
-    internal val items = network.combine(search.debounce(SEARCH_DEBOUNCE)) { _, query ->
+    internal val state = network.combine(search.debounce(SEARCH_DEBOUNCE)) { _, query ->
         repo.search(encode(query))
-            .map { images -> images.map { image -> image.toImageItem() }.toPersistentList() }
+            .map { images ->
+                val items = images.map { image -> image.toImageItem() }.toPersistentList()
+                if (items.isEmpty()) ImagesListState.Empty else ImagesListState.Items(items)
+            }
             .onFailure { ex: Throwable ->
                 when (ex) {
                     is ApiLimitExceeded -> {
@@ -65,7 +68,7 @@ class ImageListViewModel @Inject constructor(
                 Log.d(TAG, "search by $query is failed", ex)
             }.getOrNull()
     }.filterNotNull()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = persistentListOf())
+        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = ImagesListState.Loading)
 
     internal fun hideDialog() {
         mutableDialogs.value = ImagesListDialogs.None

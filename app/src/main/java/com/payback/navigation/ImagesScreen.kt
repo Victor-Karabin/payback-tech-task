@@ -66,9 +66,11 @@ internal fun NavGraphBuilder.imagesNavGraph(navController: NavController) {
         )
 
         ImageDetailsScreen(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .safeDrawingPadding(),
             viewModel = viewModel,
-            onClickBack = { navController.popBackStack() }
+            onClickBack = navController::popBackStack
         )
     }
 }

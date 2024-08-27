@@ -14,7 +14,7 @@ private fun Hit.toImage(): Image {
         id = this.id,
         thumbnailUrl = this.previewURL,
         userName = this.user,
-        tags = this.tags.split(",")
+        tags = this.tags.split(",").map { tag -> tag.trim() }
     )
 }
 
@@ -23,7 +23,7 @@ internal fun Hit.toImageDetails(): ImageDetails {
         id = this.id,
         imageUrl = this.largeImageURL,
         userName = this.user,
-        tags = this.tags,
+        tags = this.tags.split(",").map { tag -> tag.trim() },
         likes = this.likes,
         downloads = this.downloads,
         comments = this.comments

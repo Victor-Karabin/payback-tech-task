@@ -3,13 +3,10 @@ package com.payback.ui.images.list.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
@@ -21,12 +18,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.payback.ui.common.components.ImageByUrl
-import com.payback.ui.common.components.ImageTag
+import com.payback.ui.common.components.ImageTags
 import com.payback.ui.images.list.models.ImageItem
 import com.payback.ui.theme.PaybackTheme
 import kotlinx.collections.immutable.persistentListOf
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun ImageItem(
     item: ImageItem,
@@ -57,16 +53,10 @@ internal fun ImageItem(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            FlowRow(modifier = Modifier.fillMaxWidth()) {
-                item.tags.forEachIndexed { index, tag ->
-                    ImageTag(
-                        modifier = Modifier.padding(vertical = 1.dp),
-                        text = tag
-                    )
-
-                    if (index < item.tags.lastIndex) Spacer(modifier = Modifier.width(4.dp))
-                }
-            }
+            ImageTags(
+                modifier = Modifier.fillMaxWidth(),
+                tags = item.tags
+            )
         }
     }
 }

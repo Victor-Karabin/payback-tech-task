@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
@@ -16,14 +15,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.payback.R
 import com.payback.domain.network.NetworkStatus
 import com.payback.ui.common.SingleEventEffect
+import com.payback.ui.common.components.Loading
 import com.payback.ui.images.list.components.ApiLimitExceededDialog
 import com.payback.ui.images.list.components.ConfirmDetailsDialog
 import com.payback.ui.images.list.components.EmptyImagesList
@@ -31,8 +29,8 @@ import com.payback.ui.images.list.components.ImagesList
 import com.payback.ui.images.list.components.NoInternetBanner
 import com.payback.ui.images.list.models.ImageItem
 import com.payback.ui.images.list.models.ImagesListDialogs
+import com.payback.ui.images.list.models.ImagesListState
 import com.payback.ui.theme.PaybackTheme
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -66,7 +64,7 @@ fun ImageListScreen(
         ImagesListDialogs.None -> Unit // do nothing
     }
 
-    val items by viewModel.items.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val searchQuery by viewModel.search.collectAsStateWithLifecycle()
     val networkStatus by viewModel.network.collectAsStateWithLifecycle()
 
@@ -74,7 +72,7 @@ fun ImageListScreen(
         modifier = modifier,
         networkStatus = networkStatus,
         searchQuery = searchQuery,
-        items = items,
+        state = state,
         onClickItem = viewModel::onClickItem,
         onChangeSearch = viewModel::onChangeSearch
     )
@@ -84,14 +82,12 @@ fun ImageListScreen(
 private fun ImageListScreen(
     networkStatus: NetworkStatus,
     searchQuery: String,
-    items: ImmutableList<ImageItem>,
+    state: ImagesListState,
     onClickItem: (ImageItem) -> Unit,
     onChangeSearch: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier.background(MaterialTheme.colorScheme.background)
-    ) {
+    Column(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
         AnimatedVisibility(visible = !networkStatus.connected) {
             NoInternetBanner(
                 modifier = Modifier
@@ -109,25 +105,28 @@ private fun ImageListScreen(
             value = searchQuery,
             onValueChange = onChangeSearch,
             textStyle = MaterialTheme.typography.labelMedium.copy(color = textColor),
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Sentences, imeAction = ImeAction.Search
-            ),
             singleLine = true
         )
 
-        if (items.isEmpty()) {
-            EmptyImagesList(
+        when (state) {
+            ImagesListState.Empty -> EmptyImagesList(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
             )
-        } else {
-            ImagesList(
+
+            is ImagesListState.Items -> ImagesList(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                items = items,
+                items = state.items,
                 onClickItem = onClickItem
+            )
+
+            ImagesListState.Loading -> Loading(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
             )
         }
     }
@@ -161,7 +160,7 @@ private fun PreviewImageListScreenDark() {
     PaybackTheme(darkTheme = true) {
         ImageListScreen(networkStatus = NetworkStatus(connected = false),
             searchQuery = "bird",
-            items = items,
+            state = ImagesListState.Items(items),
             onClickItem = {},
             onChangeSearch = {})
     }
@@ -195,7 +194,7 @@ private fun PreviewImageListScreenLight() {
     PaybackTheme(darkTheme = false) {
         ImageListScreen(networkStatus = NetworkStatus(connected = false),
             searchQuery = "bird",
-            items = items,
+            state = ImagesListState.Items(items),
             onClickItem = {},
             onChangeSearch = {}
         )
@@ -208,7 +207,7 @@ private fun PreviewImageListScreenEmptyDark() {
     PaybackTheme(darkTheme = true) {
         ImageListScreen(networkStatus = NetworkStatus(connected = true),
             searchQuery = "bird",
-            items = persistentListOf(),
+            state = ImagesListState.Empty,
             onClickItem = {},
             onChangeSearch = {}
         )
@@ -221,9 +220,36 @@ private fun PreviewImageListScreenEmptyLight() {
     PaybackTheme(darkTheme = false) {
         ImageListScreen(networkStatus = NetworkStatus(connected = true),
             searchQuery = "bird",
-            items = persistentListOf(),
+            state = ImagesListState.Empty,
             onClickItem = {},
             onChangeSearch = {}
         )
     }
 }
+
+@Preview
+@Composable
+private fun PreviewImageListScreenLoadingDark() {
+    PaybackTheme(darkTheme = true) {
+        ImageListScreen(networkStatus = NetworkStatus(connected = true),
+            searchQuery = "bird",
+            state = ImagesListState.Loading,
+            onClickItem = {},
+            onChangeSearch = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewImageListScreenLoadingLight() {
+    PaybackTheme(darkTheme = false) {
+        ImageListScreen(networkStatus = NetworkStatus(connected = true),
+            searchQuery = "bird",
+            state = ImagesListState.Loading,
+            onClickItem = {},
+            onChangeSearch = {}
+        )
+    }
+}
+

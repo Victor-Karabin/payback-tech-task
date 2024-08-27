@@ -10,7 +10,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
@@ -18,7 +17,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 internal object ImagesModule {
 
     @Provides
-    @ViewModelScoped
     fun provideImagesRepo(
         apiProvider: ImagesApiProvider,
         cache: SearchResultsStore,
