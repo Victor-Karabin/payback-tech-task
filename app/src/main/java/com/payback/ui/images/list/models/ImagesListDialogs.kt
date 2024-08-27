@@ -10,6 +10,9 @@ internal sealed class ImagesListDialogs {
     @Stable
     data class ApiLimit(val resetDelay: Duration) : ImagesListDialogs()
 
+    @Stable
+    data class ConfirmDetails(val imageId: Int) : ImagesListDialogs()
+
     @Immutable
     data object None : ImagesListDialogs()
 }

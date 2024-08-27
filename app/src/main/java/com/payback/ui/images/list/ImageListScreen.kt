@@ -25,6 +25,7 @@ import com.payback.R
 import com.payback.domain.network.NetworkStatus
 import com.payback.ui.common.SingleEventEffect
 import com.payback.ui.images.list.components.ApiLimitExceededDialog
+import com.payback.ui.images.list.components.ConfirmDetailsDialog
 import com.payback.ui.images.list.components.EmptyImagesList
 import com.payback.ui.images.list.components.ImagesList
 import com.payback.ui.images.list.components.NoInternetBanner
@@ -54,7 +55,15 @@ fun ImageListScreen(
             onDismissRequest = viewModel::hideDialog
         )
 
-        ImagesListDialogs.None -> Unit
+        is ImagesListDialogs.ConfirmDetails -> ConfirmDetailsDialog(
+            onClickConfirm = {
+                viewModel.hideDialog()
+                onNavigateDetails(type.imageId)
+            },
+            onDismissRequest = viewModel::hideDialog
+        )
+
+        ImagesListDialogs.None -> Unit // do nothing
     }
 
     val items by viewModel.items.collectAsStateWithLifecycle()
@@ -66,7 +75,7 @@ fun ImageListScreen(
         networkStatus = networkStatus,
         searchQuery = searchQuery,
         items = items,
-        onClickItem = { item: ImageItem -> onNavigateDetails(item.id) },
+        onClickItem = viewModel::onClickItem,
         onChangeSearch = viewModel::onChangeSearch
     )
 }

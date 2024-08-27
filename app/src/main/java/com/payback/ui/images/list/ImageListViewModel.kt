@@ -8,6 +8,7 @@ import com.payback.domain.images.errors.ApiLimitExceeded
 import com.payback.domain.network.NetworkDisconnected
 import com.payback.domain.network.NetworkStatus
 import com.payback.domain.network.NetworkTracker
+import com.payback.ui.images.list.models.ImageItem
 import com.payback.ui.images.list.models.ImagesListDialogs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
@@ -73,6 +74,10 @@ class ImageListViewModel @Inject constructor(
     internal fun onChangeSearch(query: String) {
         val encoded = encode(query)
         if (encoded.length < MAX_SEARCH_LENGTH) mutableSearch.value = query
+    }
+
+    internal fun onClickItem(item: ImageItem) {
+        mutableDialogs.value = ImagesListDialogs.ConfirmDetails(item.id)
     }
 
     private fun encode(query: String): String {

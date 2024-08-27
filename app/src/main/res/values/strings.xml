@@ -17,4 +17,5 @@
     <!-- List -->
     <string name="list_images_empty">No images for this search query</string>
     <string name="list_images_api_exceed">API rate limit exceeded. Try again in %s</string>
+    <string name="list_images_confirm_details">Are you sure you want to see more details?</string>
 </resources>
