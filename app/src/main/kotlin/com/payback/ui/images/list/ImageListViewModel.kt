@@ -30,17 +30,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ImageListViewModel @Inject constructor(
-    private val repo: ImagesRepo, networkTracker: NetworkTracker
+    private val repo: ImagesRepo,
+    networkTracker: NetworkTracker
 ) : ViewModel() {
 
     private val mutableSearch = MutableStateFlow(INITIAL_SEARCH_QUERY)
     internal val search = mutableSearch.asStateFlow()
 
-    internal val network = networkTracker.isConnected.stateIn(
-        viewModelScope,
-        SharingStarted.Eagerly,
-        initialValue = NetworkStatus(true)
-    )
+    internal val network = networkTracker.isConnected
+        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = NetworkStatus(true))
 
     private val mutableDialogs = MutableStateFlow<ImagesListDialogs>(ImagesListDialogs.None)
     internal val dialogs = mutableDialogs.asStateFlow()
