@@ -79,7 +79,7 @@ class ImageListViewModel @Inject constructor(
 
     internal fun onChangeSearch(query: String) {
         val encoded = encode(query)
-        if (encoded.length < MAX_SEARCH_LENGTH) mutableSearch.value = query
+        if (encoded.length <= MAX_SEARCH_LENGTH) mutableSearch.value = query
     }
 
     internal fun onClickItem(item: ImageItem) {
@@ -93,8 +93,7 @@ class ImageListViewModel @Inject constructor(
     private companion object {
         private val TAG = ImageListViewModel::class.java.name
         private const val SEARCH_DEBOUNCE = 500L // ms
-        private const val MAX_SEARCH_LENGTH = 50
-
+        private const val MAX_SEARCH_LENGTH = 100
         private const val INITIAL_SEARCH_QUERY = "fruits"
     }
 }
