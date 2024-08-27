@@ -27,5 +27,5 @@ A simplified way was chosen.
 Multi modular approach is overhead for simple projects like this. But for real project it's preferable in my opinion.
 
 # Clean Architecture
-There are only data, domain, presentation layers. Auxiliary layers is overhead for simple projects like this.
+There are only data, domain, presentation layers. Auxiliary layers are overhead for simple projects like this.
 A simplified way was chosen.
