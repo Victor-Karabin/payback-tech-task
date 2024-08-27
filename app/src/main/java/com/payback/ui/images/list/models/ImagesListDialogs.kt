@@ -1,0 +1,15 @@
+package com.payback.ui.images.list.models
+
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
+import kotlin.time.Duration
+
+@Stable
+internal sealed class ImagesListDialogs {
+
+    @Stable
+    data class ApiLimit(val resetDelay: Duration) : ImagesListDialogs()
+
+    @Immutable
+    data object None : ImagesListDialogs()
+}

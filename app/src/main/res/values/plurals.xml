@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="seconds_short">
+        <item quantity="zero">@string/common_seconds_short</item>
+        <item quantity="one">@string/common_second_short</item>
+        <item quantity="two">@string/common_seconds_short</item>
+        <item quantity="few">@string/common_seconds_short</item>
+        <item quantity="many">@string/common_seconds_short</item>
+        <item quantity="other">@string/common_seconds_short</item>
+    </plurals>
+
+    <plurals name="minutes_short">
+        <item quantity="zero">@string/common_minutes_short</item>
+        <item quantity="one">@string/common_minute_short</item>
+        <item quantity="two">@string/common_minutes_short</item>
+        <item quantity="few">@string/common_minutes_short</item>
+        <item quantity="many">@string/common_minutes_short</item>
+        <item quantity="other">@string/common_minutes_short</item>
+    </plurals>
+
+    <plurals name="hours">
+        <item quantity="zero">@string/common_hours</item>
+        <item quantity="one">@string/common_hour</item>
+        <item quantity="two">@string/common_hours</item>
+        <item quantity="few">@string/common_hours</item>
+        <item quantity="many">@string/common_hours</item>
+        <item quantity="other">@string/common_hours</item>
+    </plurals>
+
+    <plurals name="days">
+        <item quantity="zero">@string/common_days</item>
+        <item quantity="one">@string/common_day</item>
+        <item quantity="two">@string/common_days</item>
+        <item quantity="few">@string/common_days</item>
+        <item quantity="many">@string/common_days</item>
+        <item quantity="other">@string/common_days</item>
+    </plurals>
+</resources>

@@ -1,6 +1,7 @@
 package com.payback.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -39,6 +40,9 @@ internal fun NavGraphBuilder.imagesNavGraph(navController: NavController) {
         val viewModel = hiltViewModel<ImageListViewModel>()
 
         ImageListScreen(
+            modifier = Modifier
+                .fillMaxSize()
+                .safeDrawingPadding(),
             viewModel = viewModel,
             onNavigateDetails = { imageId ->
                 val target = ImagesScreen.Details.toPath() + "?$PARAM_IMAGE_ID=$imageId"

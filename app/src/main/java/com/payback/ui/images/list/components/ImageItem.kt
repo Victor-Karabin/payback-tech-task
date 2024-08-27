@@ -1,26 +1,27 @@
 package com.payback.ui.images.list.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.payback.ui.components.ImageByUrl
-import com.payback.ui.components.ImageTag
+import com.payback.ui.common.components.ImageByUrl
+import com.payback.ui.common.components.ImageTag
 import com.payback.ui.images.list.models.ImageItem
 import com.payback.ui.theme.PaybackTheme
 import kotlinx.collections.immutable.persistentListOf
@@ -33,16 +34,17 @@ internal fun ImageItem(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.clickable(onClick = onClick),
+        modifier = modifier
+            .clickable(onClick = onClick)
+            .background(color = MaterialTheme.colorScheme.background),
         verticalAlignment = Alignment.CenterVertically
     ) {
         ImageByUrl(
-            modifier = Modifier.size(64.dp),
+            modifier = Modifier.size(72.dp),
             imageUrl = item.imageUrl,
+            contentScale = ContentScale.Crop,
             contentDescription = item.description
         )
-
-        VerticalDivider(modifier = Modifier.fillMaxHeight())
 
         Spacer(modifier = Modifier.width(8.dp))
 
@@ -50,14 +52,19 @@ internal fun ImageItem(
             Text(
                 text = item.userName,
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.onBackground
             )
+
+            Spacer(modifier = Modifier.height(4.dp))
 
             FlowRow(modifier = Modifier.fillMaxWidth()) {
                 item.tags.forEachIndexed { index, tag ->
-                    ImageTag(text = tag)
+                    ImageTag(
+                        modifier = Modifier.padding(vertical = 1.dp),
+                        text = tag
+                    )
 
-                    if (index <= item.tags.lastIndex) Spacer(modifier = Modifier.width(4.dp))
+                    if (index < item.tags.lastIndex) Spacer(modifier = Modifier.width(4.dp))
                 }
             }
         }
@@ -71,12 +78,19 @@ private fun PreviewImageItemDark() {
         ImageItem(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp),
+                .height(72.dp),
             item = ImageItem(
                 id = 1,
                 userName = "Jonh Smitt",
                 imageUrl = "https://image.png",
-                tags = persistentListOf("sunrise", "beach", "paper art"),
+                tags = persistentListOf(
+                    "sunrise",
+                    "beach",
+                    "paper art",
+                    "flowers",
+                    "yellow",
+                    "pomegranate"
+                ),
                 description = "sunrise, beach, paper art"
             ),
             onClick = {}
@@ -91,12 +105,19 @@ private fun PreviewImageItemLight() {
         ImageItem(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp),
+                .height(72.dp),
             item = ImageItem(
                 id = 1,
                 userName = "Jonh Smitt",
                 imageUrl = "https://image.png",
-                tags = persistentListOf("sunrise", "beach", "paper art"),
+                tags = persistentListOf(
+                    "sunrise",
+                    "beach",
+                    "paper art",
+                    "flowers",
+                    "yellow",
+                    "pomegranate"
+                ),
                 description = "sunrise, beach, paper art"
             ),
             onClick = {}

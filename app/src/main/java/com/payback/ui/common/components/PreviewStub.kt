@@ -1,4 +1,4 @@
-package com.payback.ui.components
+package com.payback.ui.common.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,12 +22,12 @@ internal fun PreviewStub(
     fontSize: TextUnit = 22.sp,
 ) {
     Box(
-        modifier = modifier.background(MaterialTheme.colorScheme.surface),
+        modifier = modifier.background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = text,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = fontSize,
             textAlign = TextAlign.Center
         )

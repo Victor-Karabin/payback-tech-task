@@ -15,7 +15,7 @@ internal data class Hit(
     val webformatHeight: Int,
     val largeImageURL: String,
     val fullHDURL: String?,
-    val imageURL: String,
+    val imageURL: String?,
     val imageWidth: Int,
     val imageHeight: Int,
     val imageSize: Int,

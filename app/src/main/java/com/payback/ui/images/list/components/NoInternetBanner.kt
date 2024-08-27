@@ -25,14 +25,14 @@ internal fun NoInternetBanner(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.background(MaterialTheme.colorScheme.surface),
+        modifier = modifier.background(MaterialTheme.colorScheme.tertiary),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_disconnected),
             contentDescription = stringResource(id = R.string.common_no_internet),
-            tint = MaterialTheme.colorScheme.onSurface
+            tint = MaterialTheme.colorScheme.onTertiary
         )
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -40,7 +40,7 @@ internal fun NoInternetBanner(
         Text(
             text = stringResource(id = R.string.common_no_internet),
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onTertiary
         )
     }
 }

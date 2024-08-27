@@ -90,6 +90,7 @@ dependencies {
     implementation(libs.retrofit2.converter.moshi)
     implementation(libs.moshi)
     implementation(libs.okhttp3)
+    implementation(libs.okhttp3.loggin.interceptor)
 
     debugImplementation(libs.leak.canary)
 

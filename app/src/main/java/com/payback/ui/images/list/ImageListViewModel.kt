@@ -3,79 +3,86 @@ package com.payback.ui.images.list
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.payback.domain.network.NetworkDisconnected
 import com.payback.domain.images.ImagesRepo
 import com.payback.domain.images.errors.ApiLimitExceeded
-import com.payback.domain.images.models.Image
+import com.payback.domain.network.NetworkDisconnected
 import com.payback.domain.network.NetworkStatus
 import com.payback.domain.network.NetworkTracker
-import com.payback.ui.images.list.models.ImageItem
+import com.payback.ui.images.list.models.ImagesListDialogs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
+import java.net.URLEncoder
 import javax.inject.Inject
 
 @HiltViewModel
 class ImageListViewModel @Inject constructor(
-    private val repo: ImagesRepo,
-    private val networkTracker: NetworkTracker
+    private val repo: ImagesRepo, networkTracker: NetworkTracker
 ) : ViewModel() {
 
     private val mutableSearch = MutableStateFlow(INITIAL_SEARCH_QUERY)
     internal val search = mutableSearch.asStateFlow()
 
-    private val mutableItems = MutableStateFlow(persistentListOf<ImageItem>())
-    internal val items = mutableItems.asStateFlow()
+    internal val network = networkTracker.isConnected.stateIn(
+        viewModelScope,
+        SharingStarted.Eagerly,
+        initialValue = NetworkStatus(true)
+    )
 
-    internal val networkStatus = networkTracker.isConnected
-        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = NetworkStatus(true))
-
-    private val mutableApiLimitExceeded = MutableStateFlow(false)
-    internal val apiLimitExceeded = mutableApiLimitExceeded.asStateFlow()
+    private val mutableDialogs = MutableStateFlow<ImagesListDialogs>(ImagesListDialogs.None)
+    internal val dialogs = mutableDialogs.asStateFlow()
 
     private val unknownErrorChannel = Channel<Throwable>(capacity = Channel.BUFFERED)
     internal val unknownError: Flow<Throwable>
         get() = unknownErrorChannel.receiveAsFlow()
 
-    init {
-        viewModelScope.launch {
-            networkStatus.collect { status -> if (status.connected) search(search.value) }
-        }
+    @OptIn(FlowPreview::class)
+    internal val items = network.combine(search.debounce(SEARCH_DEBOUNCE)) { _, query ->
+        repo.search(encode(query))
+            .map { images -> images.map { image -> image.toImageItem() }.toPersistentList() }
+            .onFailure { ex: Throwable ->
+                when (ex) {
+                    is ApiLimitExceeded -> {
+                        mutableDialogs.value = ImagesListDialogs.ApiLimit(ex.resetDelay)
+                    }
+
+                    is NetworkDisconnected -> Unit // do nothing. status is observed via tracker
+                    else -> unknownErrorChannel.send(ex)
+                }
+
+                Log.d(TAG, "search by $query is failed", ex)
+            }.getOrNull()
+    }.filterNotNull()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = persistentListOf())
+
+    internal fun hideDialog() {
+        mutableDialogs.value = ImagesListDialogs.None
     }
 
-    internal fun search(query: String) {
-        mutableSearch.value = query
+    internal fun onChangeSearch(query: String) {
+        val encoded = encode(query)
+        if (encoded.length < MAX_SEARCH_LENGTH) mutableSearch.value = query
+    }
 
-        if (networkStatus.value.connected) {
-            viewModelScope.launch {
-                repo.search(query)
-                    .onSuccess { images: List<Image> ->
-                        mutableItems.value = images.map { image -> image.toImageItem() }
-                            .toPersistentList()
-                    }
-                    .onFailure { ex: Throwable ->
-                        when (ex) {
-                            is ApiLimitExceeded -> mutableApiLimitExceeded.value = true
-                            is NetworkDisconnected -> Unit // do nothing
-                            else -> unknownErrorChannel.send(ex)
-                        }
-
-                        Log.d(TAG, "search by $query is failed", ex)
-                    }
-            }
-        }
+    private fun encode(query: String): String {
+        return URLEncoder.encode(query, Charsets.UTF_8.name())
     }
 
     private companion object {
         private val TAG = ImageListViewModel::class.java.name
+        private const val SEARCH_DEBOUNCE = 500L // ms
+        private const val MAX_SEARCH_LENGTH = 50
 
         private const val INITIAL_SEARCH_QUERY = "fruits"
     }

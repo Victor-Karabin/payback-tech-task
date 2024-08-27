@@ -1,4 +1,4 @@
-package com.payback.ui.components
+package com.payback.ui.common.components
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable

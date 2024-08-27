@@ -1,6 +1,7 @@
-package com.payback.ui.components
+package com.payback.ui.common.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
@@ -20,6 +21,7 @@ internal fun ImageTag(
 ) {
     Box(
         modifier = modifier
+            .border(width = 1.dp, color = MaterialTheme.colorScheme.onSurface, shape = CircleShape)
             .clip(CircleShape)
             .background(MaterialTheme.colorScheme.surface)
             .padding(horizontal = 8.dp)
@@ -33,7 +35,7 @@ internal fun ImageTag(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun PreviewImageTagDark() {
     PaybackTheme(darkTheme = true) {

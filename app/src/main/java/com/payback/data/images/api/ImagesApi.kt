@@ -1,4 +1,4 @@
-package com.payback.data.images
+package com.payback.data.images.api
 
 import com.payback.data.images.models.SearchResults
 import retrofit2.Response

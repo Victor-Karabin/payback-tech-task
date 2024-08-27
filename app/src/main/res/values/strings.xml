@@ -2,9 +2,19 @@
     <string name="app_name">payback-tech-task</string>
 
     <!-- Common -->
-    <string name="common_no_internet">No internet connection</string>
+    <string name="common_error_occurred">Sorry, an error occurred. Please try again later.</string>
+    <string name="common_no_internet">No internet connection. Offline mode</string>
     <string name="common_error_loading_image">Error loading image</string>
+    <string name="common_second_short">sec</string>
+    <string name="common_seconds_short">secs</string>
+    <string name="common_minute_short">min</string>
+    <string name="common_minutes_short">mins</string>
+    <string name="common_hour">hour</string>
+    <string name="common_hours">hours</string>
+    <string name="common_day">day</string>
+    <string name="common_days">days</string>
 
     <!-- List -->
-    <string name="list_api_exceed"></string>
+    <string name="list_images_empty">No images for this search query</string>
+    <string name="list_images_api_exceed">API rate limit exceeded. Try again in %s</string>
 </resources>

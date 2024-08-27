@@ -16,15 +16,33 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val darkColorScheme = darkColorScheme(
-    primary = Palette.Purple80,
-    secondary = Palette.PurpleGrey80,
-    tertiary = Palette.Pink80
+    primary = Palette.Millbrook,
+    onPrimary = Palette.White,
+    secondary = Palette.Boulder,
+    onSecondary = Palette.Black,
+    tertiary = Palette.Boulder,
+    onTertiary = Palette.White,
+    surface = Palette.SilverChalice,
+    onSurface = Palette.Black,
+    background = Palette.Fiord,
+    onBackground = Palette.White,
+    error = Palette.PersianRed,
+    onError = Palette.White
 )
 
 private val lightColorScheme = lightColorScheme(
-    primary = Palette.Purple40,
-    secondary = Palette.PurpleGrey40,
-    tertiary = Palette.Pink40
+    primary = Palette.Cerulean,
+    onPrimary = Palette.White,
+    secondary = Palette.ElectricViolet,
+    onSecondary = Palette.White,
+    tertiary = Palette.SilverChalice,
+    onTertiary = Palette.Black,
+    surface = Palette.WildSand,
+    onSurface = Palette.Black,
+    background = Palette.White,
+    onBackground = Palette.Black,
+    error = Palette.Pomegranate,
+    onError = Palette.White
 )
 
 @Composable
