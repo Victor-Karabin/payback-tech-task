@@ -12,6 +12,7 @@ import com.payback.domain.images.models.Image
 import com.payback.domain.images.models.ImageDetails
 import com.payback.domain.network.NetworkDisconnected
 import kotlinx.coroutines.CoroutineDispatcher
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
 import kotlin.time.DurationUnit
@@ -33,6 +34,7 @@ internal class ImagesRepoImpl @Inject constructor(
             .mapFailure { ex: Throwable ->
                 val throwable = when {
                     ex is UnknownHostException -> NetworkDisconnected()
+                    ex is SocketTimeoutException -> NetworkDisconnected()
                     ex is RestThrowable && ex.code == TOO_MANY_REQUESTS_CODE -> {
                         val reset = ex.headers[RESET_DELAY]?.toIntOrNull() ?: 0
                         ApiLimitExceeded(reset.toDuration(DurationUnit.SECONDS))

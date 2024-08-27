@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -98,15 +99,13 @@ private fun ImageDetailsScreen(
 
         when (state) {
             is DetailsState.Details -> ImageDetailsScreen(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(padding),
+                modifier = Modifier.padding(padding),
                 state = state
             )
 
             DetailsState.Loading -> Loading(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .padding(padding)
             )
         }
@@ -129,7 +128,7 @@ private fun ImageDetailsScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         ImageTags(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
             tags = state.tags

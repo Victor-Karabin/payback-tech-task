@@ -3,6 +3,7 @@ package com.payback.ui.images.list
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.payback.commons.mapFailure
 import com.payback.domain.images.ImagesRepo
 import com.payback.domain.images.errors.ApiLimitExceeded
 import com.payback.domain.network.NetworkDisconnected
@@ -55,13 +56,17 @@ class ImageListViewModel @Inject constructor(
                 val items = images.map { image -> image.toImageItem() }.toPersistentList()
                 if (items.isEmpty()) ImagesListState.Empty else ImagesListState.Items(items)
             }
+            .mapFailure { ex: Throwable ->
+                if (ex is NetworkDisconnected) {
+                    Result.success(ImagesListState.Empty)
+                } else Result.failure(ex)
+            }
             .onFailure { ex: Throwable ->
                 when (ex) {
                     is ApiLimitExceeded -> {
                         mutableDialogs.value = ImagesListDialogs.ApiLimit(ex.resetDelay)
                     }
 
-                    is NetworkDisconnected -> Unit // do nothing. status is observed via tracker
                     else -> unknownErrorChannel.send(ex)
                 }
 
