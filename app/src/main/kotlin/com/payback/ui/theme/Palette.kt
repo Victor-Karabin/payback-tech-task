@@ -4,10 +4,9 @@ import androidx.compose.ui.graphics.Color
 
 // use https://chir.ag/projects/name-that-color like source of names for colors
 // for avoiding names conflicts
-internal class Palette {
+internal class Palette private constructor() {
 
     companion object {
-        internal val LavenderGray = Color(0xFFCCC2DC)
         internal val WildSand = Color(0xFFF5F5F5)
         internal val WoodyBrown = Color(0xFF42332E)
         internal val Boulder = Color(0xFF757575)

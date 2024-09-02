@@ -26,7 +26,6 @@ internal fun ImageTag(
             .background(MaterialTheme.colorScheme.surface)
             .padding(horizontal = 8.dp)
     ) {
-
         Text(
             text = text,
             style = MaterialTheme.typography.labelSmall,

@@ -1,5 +1,6 @@
 package com.payback.commons
 
+@Suppress("TooGenericExceptionCaught") // expected
 internal fun <T> Result<T>.mapFailure(transform: (Throwable) -> Result<T>): Result<T> {
     return if (this.isFailure) {
         try {
@@ -7,5 +8,7 @@ internal fun <T> Result<T>.mapFailure(transform: (Throwable) -> Result<T>): Resu
         } catch (ex: Exception) {
             Result.failure(ex)
         }
-    } else this
+    } else {
+        this
+    }
 }

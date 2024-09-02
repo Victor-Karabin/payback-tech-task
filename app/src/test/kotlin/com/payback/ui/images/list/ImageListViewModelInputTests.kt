@@ -71,7 +71,7 @@ class ImageListViewModelInputTests {
 
     @Test
     fun `given encoded search query below max length when input then accepted`() = runTest {
-        val query = "a".repeat(MAX_SEARCH_LENGTH -1)
+        val query = "a".repeat(MAX_SEARCH_LENGTH - 1)
         val encodedQuery = URLEncoder.encode(query, Charsets.UTF_8.name())
         assert(encodedQuery.length < MAX_SEARCH_LENGTH)
         advanceUntilIdle()

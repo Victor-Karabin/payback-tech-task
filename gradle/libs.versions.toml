@@ -3,7 +3,7 @@ android-compileSdk = "34"
 android-minSdk = "21"
 android-tagetSdk = "34"
 
-agp = "8.5.2"
+agp = "8.6.0"
 kotlin = "2.0.10"
 ksp = "2.0.10-1.0.24"
 
@@ -31,6 +31,8 @@ mockito = "5.2.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 turbine = "1.1.0"
+
+detekt = "1.23.6"
 
 [libraries]
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidCore" }
@@ -71,11 +73,14 @@ coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-
 mockito = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
+detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
+
 [plugins]
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 [bundles]

@@ -142,13 +142,15 @@ private fun PreviewImageListScreenDark() {
             imageUrl = "https://image.png",
             tags = persistentListOf("Sunny, Summer, Vacation"),
             description = "vacation"
-        ), ImageItem(
+        ),
+        ImageItem(
             id = 2,
             userName = "Syaibatulhamdi",
             imageUrl = "https://image.png",
             tags = persistentListOf("beach", "rain", "clouds"),
             description = "rain"
-        ), ImageItem(
+        ),
+        ImageItem(
             id = 3,
             userName = "alba1970",
             imageUrl = "https://image.png",
@@ -158,11 +160,13 @@ private fun PreviewImageListScreenDark() {
     )
 
     PaybackTheme(darkTheme = true) {
-        ImageListScreen(networkStatus = NetworkStatus(connected = false),
+        ImageListScreen(
+            networkStatus = NetworkStatus(connected = false),
             searchQuery = "bird",
             state = ImagesListState.Items(items),
             onClickItem = {},
-            onChangeSearch = {})
+            onChangeSearch = {}
+        )
     }
 }
 
@@ -176,13 +180,15 @@ private fun PreviewImageListScreenLight() {
             imageUrl = "https://image.png",
             tags = persistentListOf("Sunny, Summer, Vacation"),
             description = "vacation"
-        ), ImageItem(
+        ),
+        ImageItem(
             id = 2,
             userName = "Syaibatulhamdi",
             imageUrl = "https://image.png",
             tags = persistentListOf("beach", "rain", "clouds"),
             description = "rain"
-        ), ImageItem(
+        ),
+        ImageItem(
             id = 3,
             userName = "alba1970",
             imageUrl = "https://image.png",
@@ -192,7 +198,8 @@ private fun PreviewImageListScreenLight() {
     )
 
     PaybackTheme(darkTheme = false) {
-        ImageListScreen(networkStatus = NetworkStatus(connected = false),
+        ImageListScreen(
+            networkStatus = NetworkStatus(connected = false),
             searchQuery = "bird",
             state = ImagesListState.Items(items),
             onClickItem = {},
@@ -205,7 +212,8 @@ private fun PreviewImageListScreenLight() {
 @Composable
 private fun PreviewImageListScreenEmptyDark() {
     PaybackTheme(darkTheme = true) {
-        ImageListScreen(networkStatus = NetworkStatus(connected = true),
+        ImageListScreen(
+            networkStatus = NetworkStatus(connected = true),
             searchQuery = "bird",
             state = ImagesListState.Empty,
             onClickItem = {},
@@ -218,7 +226,8 @@ private fun PreviewImageListScreenEmptyDark() {
 @Composable
 private fun PreviewImageListScreenEmptyLight() {
     PaybackTheme(darkTheme = false) {
-        ImageListScreen(networkStatus = NetworkStatus(connected = true),
+        ImageListScreen(
+            networkStatus = NetworkStatus(connected = true),
             searchQuery = "bird",
             state = ImagesListState.Empty,
             onClickItem = {},
@@ -231,7 +240,8 @@ private fun PreviewImageListScreenEmptyLight() {
 @Composable
 private fun PreviewImageListScreenLoadingDark() {
     PaybackTheme(darkTheme = true) {
-        ImageListScreen(networkStatus = NetworkStatus(connected = true),
+        ImageListScreen(
+            networkStatus = NetworkStatus(connected = true),
             searchQuery = "bird",
             state = ImagesListState.Loading,
             onClickItem = {},
@@ -244,7 +254,8 @@ private fun PreviewImageListScreenLoadingDark() {
 @Composable
 private fun PreviewImageListScreenLoadingLight() {
     PaybackTheme(darkTheme = false) {
-        ImageListScreen(networkStatus = NetworkStatus(connected = true),
+        ImageListScreen(
+            networkStatus = NetworkStatus(connected = true),
             searchQuery = "bird",
             state = ImagesListState.Loading,
             onClickItem = {},

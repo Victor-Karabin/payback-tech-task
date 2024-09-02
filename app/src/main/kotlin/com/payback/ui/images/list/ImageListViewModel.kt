@@ -19,6 +19,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
@@ -48,30 +49,33 @@ class ImageListViewModel @Inject constructor(
         get() = unknownErrorChannel.receiveAsFlow()
 
     @OptIn(FlowPreview::class)
-    internal val state = network.combine(search.debounce(SEARCH_DEBOUNCE)) { _, query ->
-        repo.search(encode(query))
-            .map { images ->
-                val items = images.map { image -> image.toImageItem() }.toPersistentList()
-                if (items.isEmpty()) ImagesListState.Empty else ImagesListState.Items(items)
-            }
-            .mapFailure { ex: Throwable ->
-                if (ex is NetworkDisconnected) {
-                    Result.success(ImagesListState.Empty)
-                } else Result.failure(ex)
-            }
-            .onFailure { ex: Throwable ->
-                when (ex) {
-                    is ApiLimitExceeded -> {
-                        mutableDialogs.value = ImagesListDialogs.ApiLimit(ex.resetDelay)
+    internal val state: StateFlow<ImagesListState> =
+        network.combine(search.debounce(SEARCH_DEBOUNCE)) { _, query ->
+            repo.search(encode(query))
+                .map { images ->
+                    val items = images.map { image -> image.toImageItem() }.toPersistentList()
+                    if (items.isEmpty()) ImagesListState.Empty else ImagesListState.Items(items)
+                }
+                .mapFailure { ex: Throwable ->
+                    if (ex is NetworkDisconnected) {
+                        Result.success(ImagesListState.Empty)
+                    } else {
+                        Result.failure(ex)
+                    }
+                }
+                .onFailure { ex: Throwable ->
+                    when (ex) {
+                        is ApiLimitExceeded -> {
+                            mutableDialogs.value = ImagesListDialogs.ApiLimit(ex.resetDelay)
+                        }
+
+                        else -> unknownErrorChannel.send(ex)
                     }
 
-                    else -> unknownErrorChannel.send(ex)
-                }
-
-                Log.d(TAG, "search by $query is failed", ex)
-            }.getOrNull()
-    }.filterNotNull()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = ImagesListState.Loading)
+                    Log.d(TAG, "search by $query is failed", ex)
+                }.getOrNull()
+        }.filterNotNull()
+            .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = ImagesListState.Loading)
 
     internal fun hideDialog() {
         mutableDialogs.value = ImagesListDialogs.None

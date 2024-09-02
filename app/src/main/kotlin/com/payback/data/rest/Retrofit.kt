@@ -13,6 +13,7 @@ internal fun <T> Response<T>.toThrowable(): Throwable {
     )
 }
 
+@Suppress("TooGenericExceptionCaught") // expected
 internal suspend fun <T> wrapRequest(
     dispatcher: CoroutineDispatcher,
     request: suspend () -> Response<T>

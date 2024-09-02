@@ -73,7 +73,8 @@ private fun PreviewImagesListDark() {
     )
 
     PaybackTheme(darkTheme = true) {
-        ImagesList(items = items,
+        ImagesList(
+            items = items,
             onClickItem = {}
         )
     }
@@ -107,7 +108,8 @@ private fun PreviewImagesListLight() {
     )
 
     PaybackTheme(darkTheme = false) {
-        ImagesList(items = items,
+        ImagesList(
+            items = items,
             onClickItem = {}
         )
     }
